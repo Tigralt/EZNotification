@@ -1,0 +1,4 @@
+services:
+    eznotification.manager:
+        class: Tigralt\EZNotificationBundle\Services\NotificationManager
+        arguments: [ "@doctrine.orm.entity_manager", "@security.token_storage" ]
