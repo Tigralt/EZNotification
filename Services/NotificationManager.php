@@ -52,9 +52,25 @@ class NotificationManager
         return $notifications;
     }
 
-    public function get()
+    public function get($id = null)
     {
-        return $this->em->getRepository("EZNotificationBundle:Notification")->findAll();
+        if (is_null($id))
+            return $this->em->getRepository("EZNotificationBundle:Notification")->findAll();
+
+        return $this->em->getRepository("EZNotificationBundle:Notification")->find($id);
+    }
+
+    public function seen($id, $user = null)
+    {
+        $user = is_null($user)? $this->getUser(): $user;
+
+        $notification = $this->em->getRepository("EZNotificationBundle:Notification")->find($id);
+
+        if(!$notification || $notification->getUserId() != $user->getId())
+            return;
+
+        $notification->setSeen();
+        $this->em->flush();
     }
 
     public function add($title, $message, $priority, $user = null)
