@@ -38,7 +38,7 @@ class NotificationManager
     {
         $user = is_null($user)? $this->getUser(): $user;
 
-        return $this->em->getRepository("EZNotificationBundle:Notification")->getNb($user->getId());
+        return $this->em->getRepository("EZNotificationBundle:Notification")->getNbNotSeen($user->getId());
     }
 
     public function getAll($user = null)

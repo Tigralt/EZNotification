@@ -27,4 +27,24 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function getNbNotSeen($user_id = null) {
+        $builder = $this->createQueryBuilder('o');
+
+        if(is_null($user_id)) {
+            return $builder
+                ->select($builder->expr()->count('o'))
+                ->where('o.seen = 0')
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+        return $builder
+            ->select($builder->expr()->count('o'))
+            ->where('o.userId = :u')
+            ->setParameter('u', $user_id)
+            ->andWhere('o.seen = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
